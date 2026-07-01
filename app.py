@@ -21,7 +21,8 @@ def load_model():
         gdown.download(
             'https://drive.google.com/uc?id=1i1rrXHPXoP-ckrwS0r4-PVpncmnaEB-P',
             'best_model.onnx',
-            quiet=False
+            quiet=False,
+            fuzzy=True
         )
     session = ort.InferenceSession('best_model.onnx')
     return session
