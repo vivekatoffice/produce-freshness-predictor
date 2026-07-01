@@ -1,9 +1,9 @@
 import streamlit as st
 import numpy as np
 from PIL import Image
-import gdown
 import os
 import onnxruntime as ort
+import requests
 
 st.set_page_config(
     page_title="🍌 Produce Freshness Predictor",
@@ -18,12 +18,23 @@ st.write("Upload a banana image to get an instant freshness score and dispatch r
 @st.cache_resource
 def load_model():
     if not os.path.exists('best_model.onnx'):
-        gdown.download(
-            'https://drive.google.com/uc?id=1i1rrXHPXoP-ckrwS0r4-PVpncmnaEB-P',
-            'best_model.onnx',
-            quiet=False,
-            fuzzy=True
-        )
+        url = 'https://drive.google.com/uc?export=download&id=1i1rrXHPXoP-ckrwS0r4-PVpncmnaEB-P'
+        session = requests.Session()
+        response = session.get(url, stream=True)
+        
+        # Handle Google's virus scan warning for large files
+        for key, value in response.cookies.items():
+            if key.startswith('download_warning'):
+                url = url + '&confirm=' + value
+                response = session.get(url, stream=True)
+                break
+        
+        with open('best_model.onnx', 'wb') as f:
+            for chunk in response.iter_content(chunk_size=32768):
+                if chunk:
+                    f.write(chunk)
+        print("✅ Model downloaded!")
+    
     session = ort.InferenceSession('best_model.onnx')
     return session
 
