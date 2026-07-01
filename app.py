@@ -57,15 +57,15 @@ if uploaded_file:
     st.markdown("---")
     st.metric(label="Freshness Score", value=f"{freshness_score:.1f} / 100")
 
-    if freshness_score >= 75:
-        st.success("✅ DISPATCH IMMEDIATELY — High freshness, prioritize for delivery")
-        st.info("📦 Recommended Action: Standard dispatch within 24 hours")
-    elif freshness_score >= 40:
-        st.warning("⚠️ DISCOUNT & PRIORITIZE — Moderate freshness")
-        st.info("💰 Recommended Action: Apply 20–30% discount, dispatch today")
-    else:
-        st.error("❌ REMOVE FROM INVENTORY — Spoilage risk detected")
-        st.info("🗑️ Recommended Action: Flag for removal, do not dispatch")
+    if freshness_score >= 60:
+    st.success("✅ DISPATCH IMMEDIATELY — High freshness")
+    st.info("📦 Recommended Action: Standard dispatch within 24 hours")
+elif freshness_score >= 25:
+    st.warning("⚠️ DISCOUNT & PRIORITIZE — Moderate freshness")
+    st.info("💰 Recommended Action: Apply 20–30% discount, dispatch today")
+else:
+    st.error("❌ REMOVE FROM INVENTORY — Spoilage risk detected")
+    st.info("🗑️ Recommended Action: Flag for removal, do not dispatch")
 
     st.markdown("---")
     st.markdown("**Model:** MobileNetV2 Transfer Learning | **Accuracy:** 100% on 1,792 test images")
