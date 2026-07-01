@@ -1,9 +1,9 @@
 import streamlit as st
-import tensorflow as tf
 import numpy as np
 from PIL import Image
 import gdown
 import os
+import onnxruntime as ort
 
 st.set_page_config(
     page_title="🍌 Produce Freshness Predictor",
@@ -17,15 +17,16 @@ st.write("Upload a banana image to get an instant freshness score and dispatch r
 
 @st.cache_resource
 def load_model():
-    if not os.path.exists('best_model.h5'):
+    if not os.path.exists('best_model.onnx'):
         gdown.download(
-            'https://drive.google.com/uc?id=1YE45WD3jNLhFbC7hG0LNdbQoseeitpN6',
-            'best_model.h5',
+            'https://drive.google.com/uc?id=1i1rrXHPXoP-ckrwS0r4-PVpncmnaEB-P',
+            'best_model.onnx',
             quiet=False
         )
-    return tf.keras.models.load_model('best_model.h5')
+    session = ort.InferenceSession('best_model.onnx')
+    return session
 
-model = load_model()
+session = load_model()
 
 uploaded_file = st.file_uploader("📸 Upload produce image", type=["jpg","jpeg","png"])
 
@@ -34,10 +35,11 @@ if uploaded_file:
     st.image(img, caption="Uploaded Image", width=300)
 
     img_resized = img.resize((224, 224))
-    img_array = np.array(img_resized) / 255.0
+    img_array = np.array(img_resized).astype(np.float32) / 255.0
     img_array = np.expand_dims(img_array, axis=0)
 
-    pred = model.predict(img_array)[0][0]
+    input_name = session.get_inputs()[0].name
+    pred = session.run(None, {input_name: img_array})[0][0][0]
     freshness_score = (1 - pred) * 100
 
     st.markdown("---")
