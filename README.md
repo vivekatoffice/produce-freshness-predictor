@@ -14,7 +14,10 @@ PS C:\Vivek\AxisTIP\API_MDs\Fressness_Detection\produce-freshness-predictor> pyt
   Stopping...
 PS C:\Vivek\AxisTIP\API_MDs\Fressness_Detection\produce-freshness-predictor> 
 
-![image](.\screenshots\Axis_Freshness_1.png)
-![image](.\screenshots\Axis_Freshness_2.png)
-![image](.\screenshots\Axis_Freshness_3.png)
-![image](.\screenshots\Axis_Freshness_4.png)
+![Axis Freshness 1](screenshots/Axis_Freshness_1.png)
+
+![Axis Freshness 2](screenshots/Axis_Freshness_2.png)
+
+![Axis Freshness 3](screenshots/Axis_Freshness_3.png)
+
+![Axis Freshness 4](screenshots/Axis_Freshness_4.png)
